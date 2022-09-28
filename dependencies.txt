@@ -1,0 +1,4 @@
+python-dotenv
+discord.py
+boto3
+rcon
