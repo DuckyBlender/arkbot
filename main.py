@@ -154,46 +154,46 @@ async def stop(interaction: discord.Interaction):
     print(f'{interaction.user} zatrzymał serwer!')
 
 # status command
-@client.tree.command(name='status', description='Sprawdza status serwera.')
-async def status(interaction: discord.Interaction):
-    # CHANNEL CHECK
-    if interaction.channel.id != 1024078298147471443:
-        await interaction.response.send_message('❌ Komenda działa tylko w kanale <#1021758531956899950>!', ephemeral=True)
-        return
-    r = requests.get(f'http://api.steampowered.com/ISteamApps/GetServersAtAddress/v0001?addr={IP}:27015&format=json')
-
-    # IF THE SERVER IS OFFLINE
-    if r.json()['response']['servers'] == []:
-        serverstatus = f'{redx} Offline'
-        playercount = '❓ Offline'
-
-    # IF THE SERVER IS ONLINE
-    elif r.json()['response']['servers'][0]['gamedir'] == 'ark_survival_evolved':
-        serverstatus = f'{greentick} Online'
-        players = await rcon(
-        'ListPlayers',
-        host=IP, port=27020, passwd=PASS
-        )
-
-        # if no players are online, the response starts with the letter N
-        if players[0] == 'N':
-            playercount = '0'
-        else:
-            players = players.split('\n')
-            players = players[:-1]
-            playercount = len(players)
-
-    # IF SOMETHING IS FUCKED UP
-    else:
-        serverstatus = '❓ Error'
-        playercount = '❓ Error'
-
-    embedVar = discord.Embed(title="📊 Status Serwera", description="Status maszyny oraz serwera ARK.", color=0x053552)
-    embedVar.add_field(name="Serwer ARK", value=serverstatus, inline=False)
-    if playercount != '❓ Offline':
-        embedVar.add_field(name="Gracze", value=f"{playercount}", inline=False)
-    await interaction.response.send_message(embed=embedVar, ephemeral=True)
-    return
+#@client.tree.command(name='status', description='Sprawdza status serwera.')
+#async def status(interaction: discord.Interaction):
+#    # CHANNEL CHECK
+#    if interaction.channel.id != 1024078298147471443:
+#        await interaction.response.send_message('❌ Komenda działa tylko w kanale <#1021758531956899950>!', ephemeral=True)
+#        return
+#    r = requests.get(f'http://api.steampowered.com/ISteamApps/GetServersAtAddress/v0001?addr={IP}:27015&format=json')
+#
+#    # IF THE SERVER IS OFFLINE
+#    if r.json()['response']['servers'] == []:
+#        serverstatus = f'{redx} Offline'
+#        playercount = '❓ Offline'
+#
+#    # IF THE SERVER IS ONLINE
+#    elif r.json()['response']['servers'][0]['gamedir'] == 'ark_survival_evolved':
+#        serverstatus = f'{greentick} Online'
+#        players = await rcon(
+#        'ListPlayers',
+#        host=IP, port=27020, passwd=PASS
+#        )
+#
+#        # if no players are online, the response starts with the letter N
+#        if players[0] == 'N':
+#            playercount = '0'
+#        else:
+#            players = players.split('\n')
+#            players = players[:-1]
+#            playercount = len(players)
+#
+#    # IF SOMETHING IS FUCKED UP
+#    else:
+#        serverstatus = '❓ Error'
+#        playercount = '❓ Error'
+#
+#    embedVar = discord.Embed(title="📊 Status Serwera", description="Status maszyny oraz serwera ARK.", color=0x053552)
+#    embedVar.add_field(name="Serwer ARK", value=serverstatus, inline=False)
+#    if playercount != '❓ Offline':
+#        embedVar.add_field(name="Gracze", value=f"{playercount}", inline=False)
+#    await interaction.response.send_message(embed=embedVar, ephemeral=True)
+#    return
 
 # Update channel status name every 5 minutes
 @tasks.loop(minutes=5)
